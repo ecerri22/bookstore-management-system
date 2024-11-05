@@ -1,0 +1,21 @@
+------------------------------
+          BOOKSTORE BILL        
+------------------------------
+Date: 2024-01-02 20:34:19
+Enia  Çerri
+------------------------------
+Book: Holly
+Author: Stephen King
+Quantity: 2
+Price per book: $14.0
+Subtotal: $28.0
+------------------------------
+Book: Holly
+Author: Stephen King
+Quantity: 2
+Price per book: $14.0
+Subtotal: $28.0
+------------------------------
+Total Amount: $56.0
+Number of Books Sold: 4
+------------------------------

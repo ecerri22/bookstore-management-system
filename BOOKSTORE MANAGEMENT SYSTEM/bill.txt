@@ -1,0 +1,15 @@
+------------------------------
+          BOOKSTORE BILL        
+------------------------------
+Date: 2024-01-02 20:12:29
+Rosela Berberi Librarian
+------------------------------
+Book: zemra
+Author: edmondo de amicis
+Quantity: 1
+Price per book: $5.0
+Subtotal: $5.0
+------------------------------
+Total Amount: $5.0
+Number of Books Sold: 1
+------------------------------

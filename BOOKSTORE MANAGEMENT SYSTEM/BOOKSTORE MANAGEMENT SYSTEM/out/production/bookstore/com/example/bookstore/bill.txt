@@ -1,0 +1,15 @@
+------------------------------
+          BOOKSTORE BILL        
+------------------------------
+Date: 2023-12-27 18:12:54
+Rosela Berberi
+------------------------------
+Book: Rosela
+Author: Berberi
+Quantity: 4
+Price per book: $5.0
+Subtotal: $20.0
+------------------------------
+Total Amount: $20.0
+Number of Books Sold: 4
+------------------------------
