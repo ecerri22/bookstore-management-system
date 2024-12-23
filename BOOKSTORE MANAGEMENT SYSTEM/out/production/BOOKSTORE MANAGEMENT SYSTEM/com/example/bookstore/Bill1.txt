@@ -1,15 +1,15 @@
 ------------------------------
           BOOKSTORE BILL        
 ------------------------------
-Date: 2024-01-18 11:00:04
+Date: 2024-01-18 11:06:48
 Enia Cerri Admin
 ------------------------------
 Book: 1984
 Author: George Orwell
-Quantity: 3
+Quantity: 1
 Price per book: $9.0
-Subtotal: $27.0
+Subtotal: $9.0
 ------------------------------
-Total Amount: $27.0
-Number of Books Sold: 3
+Total Amount: $9.0
+Number of Books Sold: 1
 ------------------------------

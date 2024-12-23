@@ -1,0 +1,15 @@
+------------------------------
+          BOOKSTORE BILL        
+------------------------------
+Date: 2024-01-13 21:55:56
+null null null
+------------------------------
+Book: The Maltese Falcon
+Author: Dashiell Hammet
+Quantity: 5
+Price per book: $13.0
+Subtotal: $65.0
+------------------------------
+Total Amount: $65.0
+Number of Books Sold: 5
+------------------------------
