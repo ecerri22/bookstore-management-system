@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 public class AuthorController {
-    private ArrayList<Author> author;
+    public ArrayList<Author> author;
     private File file;
     public AuthorController(){
         author = new ArrayList<>();
@@ -47,16 +47,27 @@ public class AuthorController {
         this.author.add(u);
     }
     public boolean verify(String lastName1) {
+        if (lastName1 == null || lastName1.isEmpty()) {
+            System.out.println("Invalid input for author name: " + lastName1);
+            return false;
+        }
+
         for (Author author1 : author) {
-            if (author1 != null && author1.getFullName().equals(lastName1)) {
+            System.out.println(author1.getFullName());
+            if (author1 != null && lastName1.equals(author1.getFullName())) {
+                System.out.println("Author already exists: " + lastName1);
                 return false;
             }
         }
-        Author a = new Author(lastName1);
-        this.addAuthor(a);
+        Author newAuthor = new Author(lastName1);
+        this.addAuthor(newAuthor);
         writeAuthors();
         return true;
     }
+
+
+
+
     public void printAuthorsToConsole() {
         System.out.println("Authors: " + author);
     }
