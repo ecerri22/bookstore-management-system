@@ -95,7 +95,6 @@ public class Librarian extends User {
         LocalDate localSpecificDate = specificDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         for (Bill bill : bills) {
             LocalDate billDate = bill.getDateCreated().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
             if (billDate.isEqual(localSpecificDate)) {
                 cnt += bill.getBooksSold();
             }
@@ -130,6 +129,7 @@ public class Librarian extends User {
         double amount = 0;
 
         bills = readBills();
+        if (specificDate== null) throw new IllegalArgumentException("Date can't be null");
         for(Bill bill : bills) {
             if(bill.getDateCreated().compareTo(specificDate) == 0)
                 amount=bill.getTotalAmount();

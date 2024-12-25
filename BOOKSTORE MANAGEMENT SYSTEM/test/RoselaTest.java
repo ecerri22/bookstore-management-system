@@ -2,14 +2,11 @@ package com.example.bookstore.test;
 
 import com.example.bookstore.controller.AuthorController;
 import com.example.bookstore.model.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,106 +15,230 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RoselaTest {
     private Librarian librarian;
-    private Book book;
-    private ArrayList<Transaction> transaction;
-
     private AuthorController authorController;
-    private File testFile;
 
     @BeforeEach
     void setUp() {
         authorController = new AuthorController();
         authorController.author.clear();
         librarian = new Librarian("John", "Doe", "123456789", "test@example.com", "password", "Librarian", 5000.0, new Date(), true, true);
-        book = new Book(
-                "978-3-16-148410-0", // ISBN
-                "Effective Java", // Title
-                "Joshua Bloch", // Author
-                "Programming", // Category
-                "TechBooks Supplier", // Supplier
-                new Date(), // Purchased Date
-                30.0, // Purchased Price
-                45.0, // Original Price
-                50.0, // Selling Price
-                100 // Stock
-        );
-        transaction = new ArrayList<>();
-        transaction.add(new Transaction(book, 2));
-
-        testFile = new File("bills.bin");
-        if (testFile.exists()) {
-            testFile.delete();
-        }
-
-        // Create a mock bills.bin file
-        try {
-            if (testFile.createNewFile()) {
-                System.out.println("Mock bills.bin created for testing.");
-            }
-        } catch (IOException e) {
-            fail("Failed to create mock bills.bin: " + e.getMessage());
-        }
-    }
-
-
-    @AfterEach
-    void tearDown() {
-        if (testFile.exists()) {
-            testFile.delete();
-        }
     }
 
     // Boundary Value Testing for nrOfBooks
     @Test
-    void testNrOfBooksBoundaryValues() {
-        // Test no matching date
-        Date today = new Date();
-        ArrayList<Bill> bills = new ArrayList<>();
-        bills.add(new Bill(transaction, librarian));
-        librarian.bills = bills;
-        int result = 0;
-        // Test exact date match (ignoring time)
-        LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate matchingDate = localToday; // Today, no time component
-
-        result = librarian.nrOfBooks(Date.from(matchingDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        assertEquals(2, result, "Books count should match the exact date.");  // 2 books for this transaction
-    }
-
-    // Equivalence Class Testing for nrOfBooks
-    @Test
-    void testNrOfBooksEquivalenceClasses() {
-        // Valid Case: Matching date
-        Date today = new Date();
-        ArrayList<Bill> validBills = new ArrayList<>();
-        validBills.add(new Bill(transaction, librarian));
-        librarian.bills = validBills;
-
-        int result = librarian.nrOfBooks(today);
-        assertEquals(2, result, "Books sold today should match.");
-
-        // Invalid Case: Invalid date format (non-matching date)
+    void testRobustBVTForNrOfBooks() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(today);
-        calendar.add(Calendar.DAY_OF_YEAR, -1); // Yesterday
-        Date invalidDate = calendar.getTime();
+        // Extreme past date
+        calendar.set(1900, Calendar.JANUARY, 1);
+        Date pastDate = calendar.getTime();
 
-        result = librarian.nrOfBooks(invalidDate);
-        assertEquals(0, result, "Books count should be 0 for a non-matching date.");
+        // Extreme future date
+        calendar.set(3000, Calendar.JANUARY, 1);
+        Date futureDate = calendar.getTime();
 
-        assertThrows(IllegalArgumentException.class, () -> librarian.nrOfBooks(null), "Should throw exception if date is null.");
-
-        int resultTomorrow = librarian.nrOfBooks(new Date(today.getTime() + 24 * 60 * 60 * 1000));
-        assertEquals(0, resultTomorrow, "Books sold tomorrow should be 0.");
+        assertThrows(IllegalArgumentException.class, () -> librarian.nrOfBooks(null), "Null date should throw exception");
+        assertEquals(0, librarian.nrOfBooks(pastDate), "Extreme past date should have 0 books");
+        assertEquals(0, librarian.nrOfBooks(futureDate), "Extreme future date should have 0 books");
     }
 
     @Test
-    void testBoundaryValueTestingForVerifyAuthor() {authorController.author.clear();
+    void testNormalBVTForNrOfBooks() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2022, Calendar.JANUARY, 1);
+        Date earliestDate = calendar.getTime();
+
+        calendar.set(2022, Calendar.DECEMBER, 31);
+        Date latestDate = calendar.getTime();
+
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Book book2 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+
+        Transaction transaction1 = new Transaction(book1, 1);
+        Transaction transaction2 = new Transaction(book2, 1);
+        Bill earliestDateBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction1);
+        }}, librarian);
+        earliestDateBill.setDateCreated(earliestDate);
+        Bill latestDateBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction2);
+        }}, librarian);
+        latestDateBill.setDateCreated(latestDate);
+
+        ArrayList<Bill> bills = new ArrayList<>();
+        bills.add(earliestDateBill);
+        bills.add(latestDateBill);
+        librarian.bills = bills;
+
+        assertEquals(1, librarian.nrOfBooks(earliestDate), "Should return 1 book for the earliest date");
+        assertEquals(1, librarian.nrOfBooks(latestDate), "Should return 1 book for the latest date");
+    }
+
+    @Test
+    void testWorstCaseBVTForNrOfBooks() {
+        Calendar calendar = Calendar.getInstance();
+        // Set earliest possible date (January 1st, 1900)
+        calendar.set(1900, Calendar.JANUARY, 1);
+        Date earliestDate = calendar.getTime();
+
+        // Set latest possible date (December 31st, 3000)
+        calendar.set(3000, Calendar.DECEMBER, 31);
+        Date latestDate = calendar.getTime();
+
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Book book2 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+
+        Transaction transaction1 = new Transaction(book1, 1);
+        Transaction transaction2 = new Transaction(book2, 1);
+        Bill earliestDateBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction1);
+        }}, librarian);
+
+        Bill latestDateBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction2);
+        }}, librarian);
+
+        earliestDateBill.setDateCreated(earliestDate);
+        latestDateBill.setDateCreated(latestDate);
+
+        ArrayList<Bill> bills = new ArrayList<>();
+        bills.add(earliestDateBill);
+        bills.add(latestDateBill);
+        librarian.bills = bills;
+
+        assertEquals(1, librarian.nrOfBooks(earliestDate), "Should return 1 book for the earliest date");
+        assertEquals(1, librarian.nrOfBooks(latestDate), "Should return 1 book for the latest date");
+    }
+
+    @Test
+    void testRobustWorstCaseBVTForInvalidDates() {
+        Date invalidDate1 = null;  // Null date
+        try {
+            librarian.nrOfBooks(invalidDate1); // Should throw an exception or return 0
+            fail("Date can't be null");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Test
+    void testNormalWeakEquivalenceClassForMoneyMade() {
+        Calendar calendar = Calendar.getInstance();
+
+        // Valid specific date with bills
+        calendar.set(2023, Calendar.MARCH, 15);
+        Date validDate = calendar.getTime();
+
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction1 = new Transaction(book1, 2);
+        Bill validBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction1);
+        }}, librarian);
+        validBill.setDateCreated(validDate);
+
+        librarian.bills = new ArrayList<>() {{
+            add(validBill);
+        }};
+
+        // Assert the method returns the correct total for the valid date
+        assertEquals(100.00, librarian.moneyMade(validDate), 0.01, "Should return the correct total for a valid date");
+    }
+
+    @Test
+    void testStrongNormalEquivalenceClassForMoneyMade() {
+        Calendar calendar = Calendar.getInstance();
+
+        // Valid specific dates
+        calendar.set(2023, Calendar.MARCH, 15);
+        Date validDateWithBill = calendar.getTime();
+        calendar.set(2024, Calendar.JUNE, 20);
+        Date validDateWithoutBill = calendar.getTime();
+
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction1 = new Transaction(book1, 3);
+        Bill validBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction1);
+        }}, librarian);
+        validBill.setDateCreated(validDateWithBill);
+
+        librarian.bills = new ArrayList<>() {{
+            add(validBill);
+        }};
+
+        // Assert the method returns the correct total for the date with a bill
+        assertEquals(150.00, librarian.moneyMade(validDateWithBill), 0.01, "Should return the correct total for a date with a bill");
+
+        // Assert the method returns 0 for the date without a bill
+        assertEquals(0.0, librarian.moneyMade(validDateWithoutBill), "Should return 0 for a date without a bill");
+    }
+
+    @Test
+    void testSingleWeakRobustEquivalenceClassForMoneyMade() {
+        Date invalidDate1 = null;  // Null date
+        try {
+            librarian.moneyMade(invalidDate1); // Should throw an exception or return 0
+            fail("Date can't be null");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+
+    @Test
+    void testStrongRobustEquivalenceClassForMoneyMade() {
+        Calendar calendar = Calendar.getInstance();
+        // Valid specific dates
+        calendar.set(2023, Calendar.MARCH, 15);
+        Date validDateWithBill = calendar.getTime();
+        calendar.set(2024, Calendar.JUNE, 20);
+        Date validDateWithoutBill = calendar.getTime();
+
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming", "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction1 = new Transaction(book1, 4);
+        Bill validBill = new Bill(new ArrayList<Transaction>() {{
+            add(transaction1);
+        }}, librarian);
+        validBill.setDateCreated(validDateWithBill);
+        librarian.bills = new ArrayList<>() {{
+            add(validBill);
+        }};
+
+        // **Valid Inputs:**
+        // Assert the method returns the correct total for the date with a bill
+        assertEquals(200.0, librarian.moneyMade(validDateWithBill), 0.01, "Should return the correct total for a date with a bill");
+
+        // Assert the method returns 0 for the date without a bill
+        assertEquals(0.0, librarian.moneyMade(validDateWithoutBill), "Should return 0 for a date without a bill");
+
+        // **Invalid Inputs:**
+        // Invalid input: Null date (this should throw an exception)
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> librarian.moneyMade(null));
+        assertEquals("Date can't be null", exception.getMessage(), "Should throw an exception for null date");
+
+        // Invalid input: A date in the far future, not expecting any bill for this date
+        calendar.set(9999, Calendar.DECEMBER, 31);
+        Date farFutureDate = calendar.getTime();
+        assertEquals(0.0, librarian.moneyMade(farFutureDate), "Should return 0 for a far future date with no bill");
+
+        // Invalid input: An invalid date format (if your system handles it in a particular way)
+        try {
+            Date invalidDate = new SimpleDateFormat("yyyy-MM-dd").parse("INVALID DATE");
+            assertThrows(ParseException.class, () -> librarian.moneyMade(invalidDate));
+        } catch (ParseException e) {
+            // Handle ParseException gracefully
+            System.out.println("Invalid date format handled");
+        }
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Test
+    void testBoundaryValueTestingForVerifyAuthor() {
+        authorController.author.clear();
         // Simulate adding an author and verifying the logic
         authorController.author.add(new Author("ExistingAuthor"));
 
         // Test with a valid name (Boundary case, valid input)
-        assertTrue(authorController.verify("Roselaa Berberiii"), "Valid name should return true");
+        assertTrue(authorController.verify("Rosela Berberi"), "Valid name should return true");
 
         //Test with existing name
         assertFalse(authorController.verify("ExistingAuthor"), "Existing name should return false");
@@ -126,7 +247,7 @@ public class RoselaTest {
     }
 
     @Test
-    void testEquivalenceClassTestingForVerifyAuthor(){
+    void testEquivalenceClassTestingForVerifyAuthor() {
         // Simulate adding an author and verifying the logic
         authorController.author.add(new Author("ExistingAuthor"));
         //Test with null input
@@ -198,8 +319,6 @@ public class RoselaTest {
         // Test with empty string
         assertFalse(authorController.verify(""), "Empty string should return false");
     }
-
-
 
 
 }
