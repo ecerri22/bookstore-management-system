@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TransactionController implements Serializable {
     private ArrayList<Transaction> transactions = new ArrayList();
-    private File file = new File("transactions.bin");
+    protected File file = new File("transactions.bin");
 
     public TransactionController() {
         if (!this.file.exists()) {
@@ -53,6 +53,13 @@ public class TransactionController implements Serializable {
             System.out.println(var3.getMessage());
         }
 
+    }
+
+    public void clearTransactions() {
+        // Clear the transactions list
+        this.transactions.clear();
+        // Write the empty list to the file
+        writeAllTransactions();
     }
 
     public void addInAllTransactions(Transaction transaction) {
