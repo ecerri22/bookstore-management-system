@@ -70,6 +70,15 @@ public class BookController {
         Book newBook = new Book(isbn, title, author,category, supplier, purchasedDate, purchasedPrice, originalPrice, sellingPrice, stock);
         this.book.add(newBook);
     }
+
+    public ArrayList<Book> getBooks() {
+        return book;
+    }
+
+    public ArrayList<Bill> getBills() {
+        return bills;
+    }
+    
     public boolean verifyBook(String isbn, String title, String author, String category, String supplier, Date purchasedDate, double purchasedPrice, double originalPrice, double sellingPrice, int stock ) {
         for (Book bookInstance : book) {
             if (bookInstance != null && bookInstance.getISBN().equals(isbn) && purchasedPrice>=0 && sellingPrice>=0 && originalPrice>=0) {
@@ -136,4 +145,8 @@ public class BookController {
         return false;
     }
 
+    // Check if the file exists in the resources folder
+    private boolean isFileAvailable(String fileName) {
+        return getClass().getClassLoader().getResource(fileName) != null;
+    }
 }
