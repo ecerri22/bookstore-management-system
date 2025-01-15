@@ -2,12 +2,20 @@
   <library name="lib">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" />
+      <root url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" />
+      <root url="jar://$PROJECT_DIR$/libs/mockito-core-5.15.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mockito-inline-5.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/powermock-module-junit4-2.0.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/powermock-api-mockito2-2.0.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/powermock-api-support-2.0.9.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/../../openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/../../openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/libs/mockito-inline-5.2.0.jar!/" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/../../openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1" recursive="false" type="SOURCES" />
   </library>
 </component>

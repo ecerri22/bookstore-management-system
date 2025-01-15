@@ -1,13 +1,14 @@
 package com.example.bookstore.controller;
 
 import com.example.bookstore.model.Book;
+
 import java.io.*;
 import java.util.ArrayList;
 
 public class LibrarianController {
     private ArrayList<Book> books;
 
-    private File file;
+    public File file;
 
     public LibrarianController(){
         books=new ArrayList<>();
@@ -17,7 +18,7 @@ public class LibrarianController {
         }
     }
 
-    private void readBooks() {
+    public void readBooks() {
         try {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -30,7 +31,7 @@ public class LibrarianController {
         }
     }
 
-    private void writeBooks() {
+    public void writeBooks() {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -41,5 +42,13 @@ public class LibrarianController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(ArrayList<Book> books) {
+        this.books=books;
     }
 }

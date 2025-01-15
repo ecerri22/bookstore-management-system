@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AdminController {
-    private ArrayList<User> allEmployees;
+    public ArrayList<User> allEmployees;
     private File file;
 
     public AdminController(){

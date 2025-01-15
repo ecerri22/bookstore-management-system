@@ -1,7 +1,9 @@
-import controller.BookController;
-import model.Bill;
-import model.Book;
-import model.User;
+package com.example.bookstore.test;
+
+import com.example.bookstore.controller.BookController;
+import com.example.bookstore.model.Bill;
+import com.example.bookstore.model.Book;
+import com.example.bookstore.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
