@@ -13,8 +13,8 @@ import java.util.Date;
 public class BookController {
     private ArrayList<Book> book;
     protected ArrayList<Bill> bills;
-    private File file1;
-    private File file2;
+    public File file1;
+    public File file2;
     public BookController(){
         book = new ArrayList<>();
         file2 = new File("allBooks.bin");
