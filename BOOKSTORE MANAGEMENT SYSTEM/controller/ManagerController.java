@@ -20,8 +20,7 @@ public class ManagerController {
     }
 
     @SuppressWarnings("unchecked")
-
-    private void readAllBooks(){
+    public void readAllBooks(){
         try{
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -36,7 +35,7 @@ public class ManagerController {
         }
     }
 
-    private void writeAllBooks(){
+    public void writeAllBooks(){
         try{
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -49,7 +48,7 @@ public class ManagerController {
         }
     }
 
-    private void addInAllBooks(Book book){
+    public void addInAllBooks(Book book){
         this.allBooks.add(book);
     }
 

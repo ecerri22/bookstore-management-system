@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @SuppressWarnings("unchecked")
-    private void readUsers() {
+    public void readUsers() {
         try {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
