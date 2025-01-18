@@ -62,4 +62,8 @@ public class CategoryController {
         System.out.println("Categories: " + category);
     }
 
+    // Check if the file exists in the resources folder
+    public boolean isFileAvailable(String fileName) {
+        return getClass().getClassLoader().getResource(fileName) != null;
+    }
 }
