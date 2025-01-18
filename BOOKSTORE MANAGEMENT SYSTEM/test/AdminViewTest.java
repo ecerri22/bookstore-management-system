@@ -52,7 +52,7 @@ public class AdminViewTest extends ApplicationTest {
         clickOn("Add Book");
 
         // Assert that the scene changes (example placeholder)
-        FxAssert.verifyThat(".label", LabeledMatchers.hasText("ISBN")); // Adjust as per actual UI
+        FxAssert.verifyThat(".label", LabeledMatchers.hasText("ISBN"));
     }
 
     @Test
@@ -63,6 +63,6 @@ public class AdminViewTest extends ApplicationTest {
         clickOn(ButtonType.YES.getText());
 
         // Assert that the login scene is displayed
-        FxAssert.verifyThat(".label", LabeledMatchers.hasText("Successfully logged out!")); // Adjust as per actual UI
+        FxAssert.verifyThat(".label", LabeledMatchers.hasText("Successfully logged out!"));
     }
 }
