@@ -1,6 +1,7 @@
 package com.example.bookstore.test;
 
 import com.example.bookstore.controller.BookController;
+import com.example.bookstore.controller.LibrarianController;
 import com.example.bookstore.model.Bill;
 import com.example.bookstore.model.Book;
 import com.example.bookstore.model.Librarian;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class IntegrationTestingRosela {
 
     private BookController bookController;
+    private LibrarianController librarianController = new LibrarianController();
     private File tempBookFile;
     private File tempBillFile;
     private Librarian librarian = new Librarian("John", "Doe", "123456789", "test@example.com", "password", "Librarian", 5000.0, new Date(), true, true);
@@ -50,6 +52,7 @@ public class IntegrationTestingRosela {
     void resetBooksAndBills() {
         bookController.getBooks().clear();
         bookController.getBills().clear();
+        librarianController.getBooks().clear();
     }
 
     @Test
@@ -141,4 +144,40 @@ public class IntegrationTestingRosela {
 
         assertEquals(5, totalBooksSold);
     }
+
+    /// //////////////////////////LIBRARIAN CONTROLLER/////////////////////////////
+
+    @Test
+    void testWriteBooksToFileAndReadBooksFromFile() throws FileNotFoundException {
+        // Create sample books
+        Book book1 = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming",
+                "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Book book2 = new Book("978-1-61-729494-5", "Java Concurrency in Practice", "Brian Goetz", "Programming",
+                "TechBooks Supplier", new Date(), 40.0, 55.0, 60.0, 50);
+
+        // Add books to the controller
+        librarianController.getBooks().add(book1);
+        librarianController.getBooks().add(book2);
+
+        // Write books to the file
+        try (FileOutputStream fos = new FileOutputStream(tempBookFile)) {
+            librarianController.writeBooks(fos);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Read books from the file
+        try (FileInputStream fis = new FileInputStream(tempBookFile)) {
+            librarianController.readBooks(fis);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Verify the books are correctly read
+        ArrayList<Book> booksFromFile = librarianController.getBooks();
+        assertEquals(2, booksFromFile.size());
+        assertEquals("Effective Java", booksFromFile.get(0).getTitle());
+        assertEquals("Java Concurrency in Practice", booksFromFile.get(1).getTitle());
+    }
+
 }
