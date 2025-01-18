@@ -2,6 +2,7 @@ package com.example.bookstore.test;
 
 import com.example.bookstore.controller.BookController;
 import com.example.bookstore.controller.LibrarianController;
+import com.example.bookstore.controller.TransactionController;
 import com.example.bookstore.model.Bill;
 import com.example.bookstore.model.Book;
 import com.example.bookstore.model.Librarian;
@@ -19,8 +20,10 @@ public class IntegrationTestingRosela {
 
     private BookController bookController;
     private LibrarianController librarianController = new LibrarianController();
+    private TransactionController transactionController = new TransactionController();
     private File tempBookFile;
     private File tempBillFile;
+    private File tempTransactionFile;
     private Librarian librarian = new Librarian("John", "Doe", "123456789", "test@example.com", "password", "Librarian", 5000.0, new Date(), true, true);
 
     @BeforeAll
@@ -28,13 +31,16 @@ public class IntegrationTestingRosela {
         // Set up temporary files for testing
         tempBookFile = File.createTempFile("testBooks", ".bin");
         tempBillFile = File.createTempFile("testBills", ".bin");
-
+        tempTransactionFile = File.createTempFile("testTransactions", ".bin");
         // Initialize BookController with temporary files
         bookController = new BookController();
         bookController.getBooks().clear();
         bookController.getBills().clear();
         bookController.file2 = tempBookFile;
         bookController.file1 = tempBillFile;
+
+        transactionController.file = tempTransactionFile;
+        transactionController.getAllTransactions().clear();
     }
 
     @AfterAll
@@ -46,13 +52,18 @@ public class IntegrationTestingRosela {
         if (tempBillFile.exists()) {
             tempBillFile.delete();
         }
+        if (tempTransactionFile.exists()) {
+            tempTransactionFile.delete();
+        }
     }
 
     @BeforeEach
-    void resetBooksAndBills() {
+    void reset() {
         bookController.getBooks().clear();
         bookController.getBills().clear();
         librarianController.getBooks().clear();
+        transactionController.getAllTransactions().clear();
+
     }
 
     @Test
@@ -179,5 +190,67 @@ public class IntegrationTestingRosela {
         assertEquals("Effective Java", booksFromFile.get(0).getTitle());
         assertEquals("Java Concurrency in Practice", booksFromFile.get(1).getTitle());
     }
+    /// //////////////////////////TRANSACTION CONTROLLER///////////////////////////////////////////
 
+    @Test
+    void testReadWriteTransactions() throws IOException {
+        // Create sample books and transaction
+        Book book = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming",
+                "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction = new Transaction(book, 1);
+
+        // Add transaction to the controller
+        transactionController.addInAllTransactions(transaction);
+
+        // Write transactions to the file
+        transactionController.writeAllTransactions();
+
+        // Clear the current list and read from the file
+        transactionController.getAllTransactions().clear();
+        transactionController.readAllTransactions();
+
+        assertEquals(1, transactionController.getAllTransactions().size());
+        assertEquals("978-3-16-148410-0", transactionController.getAllTransactions().get(0).getBooks().get(0).getISBN());
+    }
+
+    @Test
+    void testAddTransactionAndVerify() {
+        // Create a sample book and transaction
+        Book book = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming",
+                "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction = new Transaction(book, 1);
+
+        // Add transaction to the controller
+        transactionController.addInAllTransactions(transaction);
+
+        // Verify the transaction was added
+        assertEquals(1, transactionController.getAllTransactions().size());
+        assertEquals("978-3-16-148410-0", transactionController.getAllTransactions().get(0).getBooks().get(0).getISBN());
+
+        // Add another transaction
+        Transaction transaction2 = new Transaction(book, 2);
+        transactionController.addInAllTransactions(transaction2);
+
+        // Verify both transactions exist
+        assertEquals(2, transactionController.getAllTransactions().size());
+        assertEquals("978-3-16-148410-0", transactionController.getAllTransactions().get(1).getBooks().get(0).getISBN());
+    }
+
+    @Test
+    void testClearTransactions() {
+        // Create sample books and transactions
+        Book book = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming",
+                "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
+        Transaction transaction = new Transaction(book, 1);
+
+        // Add transaction and clear transactions
+        transactionController.addInAllTransactions(transaction);
+        assertEquals(1, transactionController.getAllTransactions().size());
+
+        // Clear all transactions
+        transactionController.clearTransactions();
+
+        // Verify the transaction list is empty
+        assertTrue(transactionController.getAllTransactions().isEmpty(), "Transaction list should be empty after clearing.");
+    }
 }

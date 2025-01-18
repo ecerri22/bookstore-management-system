@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TransactionController implements Serializable {
     private ArrayList<Transaction> transactions = new ArrayList();
-    protected File file = new File("transactions.bin");
+    public File file = new File("transactions.bin");
 
     public TransactionController() {
         if (!this.file.exists()) {
