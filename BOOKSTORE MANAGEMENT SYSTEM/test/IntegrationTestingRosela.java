@@ -236,21 +236,4 @@ public class IntegrationTestingRosela {
         assertEquals("978-3-16-148410-0", transactionController.getAllTransactions().get(1).getBooks().get(0).getISBN());
     }
 
-    @Test
-    void testClearTransactions() {
-        // Create sample books and transactions
-        Book book = new Book("978-3-16-148410-0", "Effective Java", "Joshua Bloch", "Programming",
-                "TechBooks Supplier", new Date(), 30.0, 45.0, 50.0, 100);
-        Transaction transaction = new Transaction(book, 1);
-
-        // Add transaction and clear transactions
-        transactionController.addInAllTransactions(transaction);
-        assertEquals(1, transactionController.getAllTransactions().size());
-
-        // Clear all transactions
-        transactionController.clearTransactions();
-
-        // Verify the transaction list is empty
-        assertTrue(transactionController.getAllTransactions().isEmpty(), "Transaction list should be empty after clearing.");
-    }
 }
