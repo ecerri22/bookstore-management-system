@@ -11,7 +11,7 @@ public class Bill implements Serializable {
     private ArrayList<Transaction> transactions;
     private double totalAmount = 0;
     private Date dateCreated;
-    private String seller;
+    public String seller;
     private static int id;
 
     public Bill(ArrayList<Transaction>transactions, User user){

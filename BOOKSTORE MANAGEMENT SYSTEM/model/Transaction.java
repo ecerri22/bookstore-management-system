@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Transaction implements Serializable {
-    private ArrayList<Book> books;
+    public ArrayList<Book> books;
     private int quantity;
     private double price;
     private Date transactionDate;
