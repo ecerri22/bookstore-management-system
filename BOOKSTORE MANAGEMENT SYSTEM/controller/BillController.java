@@ -63,4 +63,9 @@ public class BillController implements Serializable {
     public ArrayList<Bill> getAllBills() {
         return this.bills;
     }
+
+    // Helper method to check if a file exists in the classpath (resources)
+    public boolean isFileAvailable(String fileName) {
+        return getClass().getClassLoader().getResource(fileName) != null;
+    }
 }
