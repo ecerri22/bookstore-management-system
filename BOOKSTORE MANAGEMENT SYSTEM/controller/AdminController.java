@@ -174,4 +174,9 @@ public class AdminController {
         }
         return false;
     }
+
+    // Check if the file exists in the resources folder
+    public boolean isFileAvailable(String fileName) {
+        return getClass().getClassLoader().getResource(fileName) != null;
+    }
 }
