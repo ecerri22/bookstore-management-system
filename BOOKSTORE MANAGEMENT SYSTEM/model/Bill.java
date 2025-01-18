@@ -57,6 +57,10 @@ public class Bill implements Serializable {
         return nrOfBooksSold;
     }
 
+     public String getSeller() {
+        return seller;
+    }
+
     public void print() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
