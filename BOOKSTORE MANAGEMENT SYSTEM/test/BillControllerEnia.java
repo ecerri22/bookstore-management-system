@@ -1,5 +1,5 @@
-import controller.BillController;
-import model.Bill;
+import com.example.bookstore.controller.BillController;
+import com.example.bookstore.model.Bill;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

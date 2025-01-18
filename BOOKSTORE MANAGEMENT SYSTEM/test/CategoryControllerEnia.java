@@ -1,5 +1,5 @@
-import controller.CategoryController;
-import model.Category;
+import com.example.bookstore.controller.CategoryController;
+import com.example.bookstore.model.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,7 +1,9 @@
-import model.Bill;
-import model.Book;
-import model.Transaction;
-import model.User;
+package com.example.bookstore.test;
+
+import com.example.bookstore.model.Bill;
+import com.example.bookstore.model.Book;
+import com.example.bookstore.model.Transaction;
+import com.example.bookstore.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

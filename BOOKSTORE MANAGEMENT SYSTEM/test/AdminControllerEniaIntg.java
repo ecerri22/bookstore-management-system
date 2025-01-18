@@ -1,5 +1,7 @@
-import controller.AdminController;
-import model.User;
+package com.example.bookstore.test;
+
+import com.example.bookstore.controller.AdminController;
+import com.example.bookstore.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
