@@ -12,19 +12,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class ManagerView implements ShowView {
     private User manager;
+
     public ManagerView(User manager) {
         initialize();
-        this.manager=manager;
+        this.manager = manager;
     }
 
     public void initialize() {
         BookController bookStock0 = new BookController();
         bookStock0.displayAlert();
     }
-
 
     @Override
     public Scene execute(Stage primaryStage) {
@@ -34,7 +33,7 @@ public class ManagerView implements ShowView {
         VBox sidebar = new VBox();
         sidebar.setSpacing(50);
         sidebar.setMinWidth(150);
-        sidebar.setPadding(new Insets(60,20,20,20));
+        sidebar.setPadding(new Insets(60, 20, 20, 20));
         borderPane.setLeft(sidebar);
 
         Button seeBooksbutton = new Button("See All Books");
@@ -55,14 +54,14 @@ public class ManagerView implements ShowView {
 
         seeBooksbutton.setOnAction(e -> {
             ManagerController managerController = new ManagerController();
-
             AllBooksView allBooksView = new AllBooksView(managerController);
 
+            // Get the root node from the Scene instead of the Scene itself
             Scene allBooksViewScene = allBooksView.execute(primaryStage);
             borderPane.setCenter(allBooksViewScene.getRoot());
         });
 
-        if(manager.getCanAddBill()) {
+        if (manager.getCanAddBill()) {
             Button addBill = new Button("Sell Book");
 
             addBill.setMinWidth(150);
@@ -76,14 +75,11 @@ public class ManagerView implements ShowView {
             sidebar.getChildren().add(addBill);
         }
 
-
         addRemoveBookbutton.setOnAction(e -> {
             AddRemoveBook addRemoveBook = new AddRemoveBook();
             Scene addRemoveBookScene = addRemoveBook.execute(primaryStage);
             borderPane.setCenter(addRemoveBookScene.getRoot());
         });
-
-
 
         alertsbutton.setOnAction(e -> {
             Alerts alerts = new Alerts();
@@ -95,11 +91,11 @@ public class ManagerView implements ShowView {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to logout?", ButtonType.YES, ButtonType.NO);
             confirmation.showAndWait();
             if (confirmation.getResult() == ButtonType.YES) {
-                Alert info=new Alert(Alert.AlertType.INFORMATION);
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
                 info.setHeaderText("Successfully logged out!");
                 info.showAndWait();
                 primaryStage.setScene(new LoginView().execute(primaryStage));
-            };
+            }
         });
 
         sidebar.getChildren().addAll(seeBooksbutton, addRemoveBookbutton, alertsbutton, logout);
