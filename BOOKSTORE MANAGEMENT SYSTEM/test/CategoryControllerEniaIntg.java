@@ -1,6 +1,10 @@
-import controller.CategoryController;
-import model.Category;
-import org.junit.jupiter.api.*;
+import com.example.bookstore.controller.CategoryController;
+import com.example.bookstore.model.Category;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 import java.io.*;
 import java.util.ArrayList;
 
