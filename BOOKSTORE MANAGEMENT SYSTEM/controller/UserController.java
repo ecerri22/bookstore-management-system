@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class UserController {
-    private ArrayList<User> users;
+    public ArrayList<User> users;
     private File file;
 
     public UserController() {
