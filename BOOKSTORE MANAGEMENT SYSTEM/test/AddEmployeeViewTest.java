@@ -1,10 +1,13 @@
+package com.example.bookstore.test;
+
+import com.example.bookstore.view.AddEmployeeView;
+
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import view.AddEmployeeView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
