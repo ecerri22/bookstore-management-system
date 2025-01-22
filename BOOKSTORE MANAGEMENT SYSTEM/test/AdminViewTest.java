@@ -6,13 +6,11 @@ import com.example.bookstore.model.User;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
-import view.AdminView;
 
 
 public class AdminViewTest extends ApplicationTest {
