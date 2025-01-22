@@ -1,9 +1,13 @@
-import controller.AdminController;
+package com.example.bookstore.test;
+
+import com.example.bookstore.controller.AdminController;
+import com.example.bookstore.model.User;
+import com.example.bookstore.view.AllEmpoyeesView;
+
+
 import javafx.stage.Stage;
-import model.User;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import view.AllEmpoyeesView;
 
 import java.util.ArrayList;
 
