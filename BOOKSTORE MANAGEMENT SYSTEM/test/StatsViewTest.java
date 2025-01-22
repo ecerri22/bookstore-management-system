@@ -1,7 +1,10 @@
+package com.example.bookstore.test;
+
+import com.example.bookstore.view.StatsView;
+
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import view.StatsView;
 
 import static org.junit.jupiter.api.Assertions.*;
 
