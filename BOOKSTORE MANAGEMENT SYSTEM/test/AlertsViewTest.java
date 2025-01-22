@@ -1,10 +1,13 @@
+package com.example.bookstore.test;
+
+import com.example.bookstore.view.Alerts;
+
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import view.Alerts;
 
 import static org.junit.jupiter.api.Assertions.*;
 
