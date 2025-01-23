@@ -1,4 +1,4 @@
-package com.example.bookstore.test;
+package com.example.bookstore.test.systemTests;
 
 import com.example.bookstore.view.AddRemoveBook;
 import javafx.scene.control.ComboBox;

@@ -1,4 +1,4 @@
-package com.example.bookstore.test;
+package com.example.bookstore.test.integrationTests;
 
 import com.example.bookstore.controller.BookController;
 import com.example.bookstore.controller.LibrarianController;

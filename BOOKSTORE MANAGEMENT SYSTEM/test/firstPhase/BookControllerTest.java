@@ -1,4 +1,4 @@
-package com.example.bookstore.test;
+package com.example.bookstore.test.firstPhase;
 
 import com.example.bookstore.controller.BookController;
 import com.example.bookstore.model.Bill;

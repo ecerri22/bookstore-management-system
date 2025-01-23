@@ -1,4 +1,4 @@
-package com.example.bookstore.test;
+package com.example.bookstore.test.unitTests;
 
 import com.example.bookstore.controller.TransactionController;
 import com.example.bookstore.model.Book;
