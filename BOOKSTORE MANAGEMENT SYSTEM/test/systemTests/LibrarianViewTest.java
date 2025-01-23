@@ -49,7 +49,7 @@ public class LibrarianViewTest extends ApplicationTest {
     void testSeeBooksButtonAction() {
         // Click the "Books Data" button
         clickOn("Books Data");
-        FxAssert.verifyThat(".label", LabeledMatchers.hasText("ISBN"));
+        FxAssert.verifyThat(".button", LabeledMatchers.hasText("Add Book"));
     }
 
     @Test

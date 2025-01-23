@@ -21,7 +21,7 @@ public class ManagerController {
     }
 
     // Method to read all books from the file
-    private void readAllBooks() {
+    public void readAllBooks() {
         try (FileInputStream fis = new FileInputStream(file);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
 
@@ -32,7 +32,7 @@ public class ManagerController {
     }
 
     // Method to write all books to the file
-    private void writeAllBooks() {
+    public void writeAllBooks() {
         try (FileOutputStream fos = new FileOutputStream(file);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 

@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -70,7 +71,7 @@ class UnitTestingManagerController {
         doReturn(false).when(mockBookList).contains(mockBook);
 
         // Act: Try to find a non-existing book
-        Book result = managerController.findBook(mockBook);
+        Optional<Book> result = managerController.findBook(mockBook);
 
         // Assert: Verify the method returns null for a non-existing book
         assertNull(result, "The book should not be found in the list");
@@ -225,7 +226,7 @@ class UnitTestingManagerController {
         double newSellingPrice = 25.99;
 
         // Arrange: Mock the behavior of findBook to return the mockBook
-        when(managerController.findBook(mockBook)).thenReturn(mockBook);
+        when(managerController.findBook(mockBook)).thenReturn(Optional.ofNullable(mockBook));
 
         // Act: Modify the selling price of the book
         boolean result = managerController.modifySellingPrice(mockBook, newSellingPrice);

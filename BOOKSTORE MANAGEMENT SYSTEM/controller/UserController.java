@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class UserController {
-    private ArrayList<User> users;
+    public ArrayList<User> users;
     private File file;
 
     public UserController() {
@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @SuppressWarnings("unchecked")
-    private void readUsers() {
+    public void readUsers() {
         try {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
